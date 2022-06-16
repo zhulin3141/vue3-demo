@@ -3,6 +3,7 @@ import ProvinceRank from "./components/ProvinceRank.vue";
 import BasicProportion from "./components/BasicProportion.vue";
 import CurrentConfirmedCompare from "./components/CurrentConfirmedCompare.vue";
 import BasicDataItemLabel from "./components/BasicDataItemLabel.vue";
+import BasicTrendChart from "./components/BasicTrendChart.vue";
 
 import apiService from "./api";
 import { onMounted, ref } from "vue";
@@ -112,6 +113,12 @@ const initBasicConfig = (data: any = null) => {
 
 let defaultDataConfig = ref(initBasicConfig());
 
+let basicIncrTrendData = ref({
+  dateList: [],
+  importedIncrDataList: [],
+  currentConfirmedIncrDataList: [],
+});
+
 const queryProvinceDataList = () => {
   apiService.getProvinceDataList().then((res: any) => {
     // 设置累计排名数据
@@ -190,6 +197,13 @@ const setBasicIncrTrendData = (data: any) => {
     }
     curedCountList.push(data.curedCountList[i][1]);
   }
+
+  basicIncrTrendData.value = {
+    dateList: dateList,
+    importedIncrDataList: importedIncrList,
+    currentConfirmedIncrDataList: currentConfirmedIncrList,
+    noInFectDataList: noInFectDataList,
+  };
 
   confirmSingleBarChartData.value = {
     dateList: sevenDayDateList,
@@ -272,7 +286,13 @@ const setBasicIncrTrendData = (data: any) => {
 
       <div id="m-wrapper">
         <div id="map-wrapper"></div>
-        <div></div>
+        <div class="new-trader-wrapper chart-card">
+          <div>新增趋势</div>
+          <basic-trend-chart
+            :data="basicIncrTrendData"
+            style="width: 100%; height: 320px"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -311,6 +331,7 @@ body {
   padding: 20px;
 }
 #info-wrapper {
+  display: flex;
   .chart-card {
     margin: 0 0 0 12px;
   }
@@ -353,6 +374,17 @@ body {
     #info-wrapper .chart-card {
       padding: 10px 20px;
       float: left;
+    }
+
+    #m-wrapper {
+      display: flex;
+      margin: 20px 0;
+      #map-wrapper {
+        flex: 1;
+      }
+      .new-trader-wrapper {
+        width: 250px;
+      }
     }
   }
 }
