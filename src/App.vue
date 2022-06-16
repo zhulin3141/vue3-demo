@@ -2,6 +2,7 @@
 import ProvinceRank from "./components/ProvinceRank.vue";
 import BasicProportion from "./components/BasicProportion.vue";
 import CurrentConfirmedCompare from "./components/CurrentConfirmedCompare.vue";
+import BasicDataItemLabel from "./components/BasicDataItemLabel.vue";
 
 import apiService from "./api";
 import { onMounted, ref } from "vue";
@@ -36,8 +37,6 @@ let basicData: any = ref({
   updateTime: "-",
 });
 
-let defaultDataConfig: any = ref([]);
-
 let rate: Object = ref({});
 
 let confirmSingleBarChartData: any = ref({
@@ -45,6 +44,63 @@ let confirmSingleBarChartData: any = ref({
   currentConfirmedCountList: [],
   confirmedCountList: [],
 });
+
+const getNumberStyle = (color = '#E8EAF6', fontSize = 30, fontWeight = 'bolder') => {
+  return {
+    fontSize: fontSize,
+    fill: color,
+    fontWeight: fontWeight
+  }
+}
+let formatter:any = {}
+const initBasicConfig = (data:any = null) => {
+  let currentConfirmedCount = data ? [data.currentConfirmedCount] : 0;
+  let confirmedCount = data ? [data.confirmedCount] : 0;
+  let importedCount = data ? [data.importedCount] : 0;
+  let noInFectCount = data ? [data.noInFectCount] : 0;
+  let deadCount = data ? [data.deadCount] : 0;
+  let curedCount = data ? [data.curedCount] : 0;
+  return {
+    confirmedCount: {
+      number: [confirmedCount],
+      content: "{nt}",
+      formatter,
+      style: getNumberStyle(),
+    },
+    currentConfirmedCount: {
+      number: [currentConfirmedCount],
+      content: "{nt}",
+      formatter,
+      style: getNumberStyle("#2E8EEA"),
+    },
+    importedCount: {
+      number: [importedCount],
+      content: "{nt}",
+      formatter,
+      style: getNumberStyle(),
+    },
+    noInFectCount: {
+      number: [noInFectCount],
+      content: "{nt}",
+      formatter,
+      style: getNumberStyle(),
+    },
+    deadCount: {
+      number: [deadCount],
+      content: "{nt}",
+      formatter,
+      style: getNumberStyle("#D32E58"),
+    },
+    curedCount: {
+      number: [curedCount],
+      content: "{nt}",
+      formatter,
+      style: getNumberStyle(),
+    },
+  };
+};
+
+let defaultDataConfig = ref(initBasicConfig());
 
 const queryProvinceDataList = () => {
   apiService.getProvinceDataList().then((res: any) => {
@@ -69,8 +125,9 @@ const setProvinceRankingData = (areaList: any) => {
 
 const queryBasicData = () => {
   apiService.getOverall().then((res: any) => {
-    basicData = res.data.data;
+    basicData.value = res.data.data;
     setBasicData(res.data.data);
+    defaultDataConfig.value = initBasicConfig(res.data.data);
   });
 };
 
@@ -121,12 +178,40 @@ const setBasicData = (data: any) => {
     </div>
     <div id="r-wrapper">
       <div id="info-wrapper">
-        <div class="chart-card more">现有确诊 <i></i><span>0</span></div>
-        <div class="chart-card less">累计确诊 <i></i><span>0</span></div>
-        <div class="chart-card">境外输入 <i></i><span>0</span></div>
-        <div class="chart-card">无症状感染者 <i></i><span>0</span></div>
-        <div class="chart-card">累计治愈 <i></i><span>0</span></div>
-        <div class="chart-card">累计死亡 <i></i><span>0</span></div>
+        <basic-data-item-label
+          label="现有确诊"
+          :config="defaultDataConfig.currentConfirmedCount"
+          :inCrValue="basicData.currentConfirmedIncr"
+        />
+        <basic-data-item-label
+          label="累计确诊"
+          :config="defaultDataConfig.confirmedCount"
+          :inCrValue="basicData.confirmedIncr"
+        />
+        <!-- 境外输入 -->
+        <basic-data-item-label
+          label="境外输入"
+          :config="defaultDataConfig.importedCount"
+          :inCrValue="basicData.importedIncr"
+        />
+        <!-- 无症状感染者 -->
+        <basic-data-item-label
+          label="无症状感染者"
+          :config="defaultDataConfig.noInFectCount"
+          :inCrValue="basicData.noInFectIncr"
+        />
+        <!-- 累计治愈 -->
+        <basic-data-item-label
+          label="累计治愈"
+          :config="defaultDataConfig.curedCount"
+          :inCrValue="basicData.curedIncr"
+        />
+        <!-- 死亡人数 -->
+        <basic-data-item-label
+          label="累计死亡"
+          :config="defaultDataConfig.deadCount"
+          :inCrValue="basicData.deadIncr"
+        />
       </div>
 
       <div id="m-wrapper">
@@ -156,6 +241,12 @@ body {
   border-radius: 10px;
   margin: 0 20px;
   padding: 7px 0;
+  & .numbers{
+    font-size: 25px;
+    font-weight: bold;
+    color: #494ef1;
+    padding: 12px 0;
+  }
 }
 #tip-info {
   position: absolute;
@@ -164,6 +255,9 @@ body {
   padding: 20px;
 }
 #info-wrapper {
+  .chart-card{
+    margin: 0 0 0 12px;
+  }
   & i {
     width: 0;
     height: 0;
@@ -180,7 +274,7 @@ body {
   & .less span {
     color: @less-color;
   }
-  & .big i {
+  & .more i {
     border-color: transparent transparent @more-color;
     top: -13px;
   }
@@ -201,7 +295,7 @@ body {
     flex: 1;
 
     #info-wrapper .chart-card {
-      padding: 5px 20px;
+      padding: 10px 20px;
       float: left;
     }
   }
