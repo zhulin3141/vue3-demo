@@ -58,9 +58,9 @@ export default defineComponent({
           top: '5%',
         },
         grid: {
-          x: '12%',
+          x: '20%',
           width: '82%',
-          y: '12%',
+          y: '15%',
         },
         xAxis: {
           data: props.data.dateList,
@@ -99,7 +99,7 @@ export default defineComponent({
           {
             name: '累计治愈',
             type: 'bar',
-            barWidth: 10,
+            barWidth: 12,
             itemStyle: {
               borderRadius: 5,
                 color: new echarts.graphic.LinearGradient(
@@ -116,7 +116,7 @@ export default defineComponent({
             name: '累计确诊',
             type: 'bar',
             barGap: '-100%',
-            barWidth: 10,
+            barWidth: 12,
             itemStyle: {
               borderRadius: 5,
                 color: new echarts.graphic.LinearGradient(

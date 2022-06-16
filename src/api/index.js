@@ -10,5 +10,8 @@ export default {
         return mockRequest.get('/overall')
     },
 
+    getDailyList: () => {
+        return mockRequest.get('/daily')
+    },
     
 }

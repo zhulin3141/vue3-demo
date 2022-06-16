@@ -10,6 +10,7 @@ import { onMounted, ref } from "vue";
 onMounted(() => {
   queryProvinceDataList();
   queryBasicData();
+  queryTrendDataList();
 });
 
 let top10ProvinceData: any = ref({
@@ -37,6 +38,8 @@ let basicData: any = ref({
   updateTime: "-",
 });
 
+let trendDataList = ref([]);
+
 let rate: Object = ref({});
 
 let confirmSingleBarChartData: any = ref({
@@ -45,21 +48,28 @@ let confirmSingleBarChartData: any = ref({
   confirmedCountList: [],
 });
 
-const getNumberStyle = (color = '#E8EAF6', fontSize = 30, fontWeight = 'bolder') => {
-  return {
-    fontSize: fontSize,
-    fill: color,
-    fontWeight: fontWeight
-  }
-}
-let formatter:any = {}
-const initBasicConfig = (data:any = null) => {
+const initBasicConfig = (data: any = null) => {
   let currentConfirmedCount = data ? [data.currentConfirmedCount] : 0;
   let confirmedCount = data ? [data.confirmedCount] : 0;
   let importedCount = data ? [data.importedCount] : 0;
   let noInFectCount = data ? [data.noInFectCount] : 0;
   let deadCount = data ? [data.deadCount] : 0;
   let curedCount = data ? [data.curedCount] : 0;
+
+  let formatter: any = {};
+
+  const getNumberStyle = (
+    color = "#E8EAF6",
+    fontSize = 30,
+    fontWeight = "bolder"
+  ) => {
+    return {
+      fontSize: fontSize,
+      fill: color,
+      fontWeight: fontWeight,
+    };
+  };
+
   return {
     confirmedCount: {
       number: [confirmedCount],
@@ -132,13 +142,59 @@ const queryBasicData = () => {
 };
 
 const setBasicData = (data: any) => {
-  // 重新生成，否则视图不更新
-  // let config = initBasicConfig(data)
-  // defaultDataConfig = config
   // 处理治愈率和死亡率
   rate = {
     curedRate: data.curedRate / 100,
     deadRate: data.deadRate / 100,
+  };
+};
+
+const queryTrendDataList = () => {
+  apiService.getDailyList().then((res: any) => {
+    trendDataList.value = res.data.data;
+    setBasicIncrTrendData(res.data.data);
+  });
+};
+
+const setBasicIncrTrendData = (data: any) => {
+  let dateList = [];
+  let currentConfirmedIncrList = [];
+  let importedIncrList = [];
+  let sevenDayDateList = [];
+  // 仅显示一周条数据
+  let confirmedCountList = [];
+  let curedCountList = [];
+  // 仅获取7条数据
+  let count = 7;
+  let noInFectDataList = [];
+  for (let i = data.currentConfirmedIncrList.length - 1; i >= 0; i--) {
+    dateList.push(data.currentConfirmedIncrList[i][0]);
+    currentConfirmedIncrList.push(data.currentConfirmedIncrList[i][1]);
+  }
+  for (let i = data.importedIncrList.length - 1; i >= 0; i--) {
+    importedIncrList.push(data.importedIncrList[i][1]);
+  }
+  for (let i = data.noInFectCountList.length - 1; i >= 0; i--) {
+    noInFectDataList.push(data.noInFectCountList[i][1]);
+  }
+  for (let i = count; i >= 0; i--) {
+    if (confirmedCountList.length >= count) {
+      break;
+    }
+    sevenDayDateList.push(data.confirmedCountList[i][0]);
+    confirmedCountList.push(data.confirmedCountList[i][1]);
+  }
+  for (let i = count; i >= 0; i--) {
+    if (curedCountList.length >= count) {
+      break;
+    }
+    curedCountList.push(data.curedCountList[i][1]);
+  }
+
+  confirmSingleBarChartData.value = {
+    dateList: sevenDayDateList,
+    curedCountList: curedCountList,
+    confirmedCountList: confirmedCountList,
   };
 };
 </script>
@@ -241,7 +297,7 @@ body {
   border-radius: 10px;
   margin: 0 20px;
   padding: 7px 0;
-  & .numbers{
+  & .numbers {
     font-size: 25px;
     font-weight: bold;
     color: #494ef1;
@@ -255,7 +311,7 @@ body {
   padding: 20px;
 }
 #info-wrapper {
-  .chart-card{
+  .chart-card {
     margin: 0 0 0 12px;
   }
   & i {
