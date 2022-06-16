@@ -119,11 +119,17 @@ export default defineComponent({
                   ],
                 },
                 label: {
-                  // show: false
                 },
                 labelLine: {
                   show: false,
                 },
+              },
+            },
+            {
+              name: "",
+              value: 100 - item.value,
+              label: {
+                show: false,
               },
             },
           ],
