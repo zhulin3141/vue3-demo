@@ -4,6 +4,7 @@ import BasicProportion from "./components/BasicProportion.vue";
 import CurrentConfirmedCompare from "./components/CurrentConfirmedCompare.vue";
 import BasicDataItemLabel from "./components/BasicDataItemLabel.vue";
 import BasicTrendChart from "./components/BasicTrendChart.vue";
+import DataMap from "./components/DataMap.vue";
 
 import apiService from "./api";
 import { onMounted, ref } from "vue";
@@ -119,10 +120,13 @@ let basicIncrTrendData = ref({
   currentConfirmedIncrDataList: [],
 });
 
+let mapDataList = ref([]);
+
 const queryProvinceDataList = () => {
   apiService.getProvinceDataList().then((res: any) => {
     // 设置累计排名数据
     setProvinceRankingData(res.data.data);
+    setMapData(res.data.data);
   });
 };
 
@@ -211,6 +215,17 @@ const setBasicIncrTrendData = (data: any) => {
     confirmedCountList: confirmedCountList,
   };
 };
+
+const setMapData = (dataList: any) => {
+  let list = dataList.map((item: any) => {
+    return {
+      name: item.provinceLabel,
+      value: item.confirmedCount,
+    };
+  });
+
+  mapDataList.value = list;
+};
 </script>
 
 <template>
@@ -285,7 +300,14 @@ const setBasicIncrTrendData = (data: any) => {
       </div>
 
       <div id="m-wrapper">
-        <div id="map-wrapper"></div>
+        <div id="map-wrapper">
+          <data-map
+            ref="dataMap"
+            title=""
+            :list="mapDataList"
+            style="width: 100%; height: 620px"
+          />
+        </div>
         <div class="new-trader-wrapper chart-card">
           <div><h4>新增趋势</h4></div>
           <basic-trend-chart
