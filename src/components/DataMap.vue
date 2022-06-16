@@ -1,9 +1,11 @@
 <template>
   <div
-    id="china-map"
+    ref="chinaMapRef"
     class="main-map-chart"
-    style="width: 100%; height: 100%"
+    style="width: 100%; height: 620px"
   />
+
+  <button class="resetMapBtn" @click="resetMapPosition">重置</button>
 </template>
 
 <script lang="ts">
@@ -26,7 +28,7 @@ export default {
       if (null != chart) {
         chart.dispose();
       }
-      chart = proxy.$echarts.init(document.getElementById("china-map"));
+      chart = proxy.$echarts.init(proxy.$refs.chinaMapRef);
       setOptions();
     };
 
@@ -37,7 +39,11 @@ export default {
           formatter: (params: any, t: string, n: Function) => {
             return 0.5 == params.value
               ? params.name + "：有疑似病例"
-              : params.seriesName + "<br />" + params.name + "：" + params.value;
+              : params.seriesName +
+                  "<br />" +
+                  params.name +
+                  "：" +
+                  params.value;
           },
         },
         title: {
@@ -59,6 +65,9 @@ export default {
           showLabel: !0,
           textStyle: {
             color: "rgba(255,255,255,0.7)",
+          },
+          inRange:{
+            color: '#fff'
           },
           // 图例
           pieces: [
@@ -148,6 +157,32 @@ export default {
     onMounted(() => {
       initChart();
     });
+
+    return {
+      setOptions,
+    };
+  },
+
+  methods: {
+    resetMapPosition() {
+      chart?.dispatchAction({ type: "restore" });
+      this.setOptions();
+    },
   },
 };
 </script>
+
+<style scoped>
+.resetMapBtn {
+  position: absolute;
+  top: 0;
+  background-color: #494ef1;
+  border: 0;
+  color: #fff;
+  border-radius: 5px;
+  padding: 7px 12px;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+}
+</style>

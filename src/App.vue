@@ -302,10 +302,8 @@ const setMapData = (dataList: any) => {
       <div id="m-wrapper">
         <div id="map-wrapper">
           <data-map
-            ref="dataMap"
             title=""
             :list="mapDataList"
-            style="width: 100%; height: 620px"
           />
         </div>
         <div class="new-trader-wrapper chart-card">
@@ -357,6 +355,7 @@ body {
 }
 #info-wrapper {
   display: flex;
+  padding-right: 20px;
   .chart-card {
     margin: 0 0 0 12px;
   }
@@ -367,9 +366,11 @@ body {
     border-style: solid;
     border-width: 5px;
     position: relative;
-    top: 11px;
+    top: 13px;
   }
-
+  & span{
+    padding: 0 5px;
+  }
   & .more span {
     color: @more-color;
   }
@@ -378,7 +379,7 @@ body {
   }
   & .more i {
     border-color: transparent transparent @more-color;
-    top: -13px;
+    top: -11px;
   }
   & .less i {
     border-color: @less-color transparent transparent;
@@ -399,6 +400,7 @@ body {
     #info-wrapper .chart-card {
       padding: 10px 20px;
       float: left;
+      flex: 1 1 auto;
     }
 
     #m-wrapper {
@@ -406,9 +408,11 @@ body {
       margin: 20px 0;
       #map-wrapper {
         flex: 1;
+        position: relative;
       }
       .new-trader-wrapper {
         width: 250px;
+        height: 362px;
       }
     }
   }
