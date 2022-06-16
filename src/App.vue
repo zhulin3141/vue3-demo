@@ -225,21 +225,21 @@ const setBasicIncrTrendData = (data: any) => {
   <div class="middle">
     <div id="l-wrapper">
       <div class="chart-card">
-        <div>累计排名（TOP 10）</div>
+        <div><h4>累计排名（TOP 10）</h4></div>
         <province-rank
           :data="top10ProvinceData"
           style="width: 100%; height: 380px"
         />
       </div>
       <div class="chart-card" style="margin: 15px 20px">
-        <div>占比</div>
+        <div><h4>占比</h4></div>
         <basic-proportion
           :data="basicData"
           style="width: 100%; height: 120px"
         />
       </div>
       <div class="chart-card">
-        <div>最近一周累计治愈</div>
+        <div><h4>最近一周累计治愈</h4></div>
         <current-confirmed-compare
           :data="confirmSingleBarChartData"
           style="width: 100%; height: 310px"
@@ -287,7 +287,7 @@ const setBasicIncrTrendData = (data: any) => {
       <div id="m-wrapper">
         <div id="map-wrapper"></div>
         <div class="new-trader-wrapper chart-card">
-          <div>新增趋势</div>
+          <div><h4>新增趋势</h4></div>
           <basic-trend-chart
             :data="basicIncrTrendData"
             style="width: 100%; height: 320px"
@@ -322,6 +322,9 @@ body {
     font-weight: bold;
     color: #494ef1;
     padding: 12px 0;
+  }
+  & h4 {
+    margin: 5px 0 15px;
   }
 }
 #tip-info {
