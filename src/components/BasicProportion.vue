@@ -6,7 +6,7 @@
 import { ComponentInternalInstance, defineComponent, getCurrentInstance, onMounted, watch } from "vue";
 import * as echarts from "echarts/core";
 
-let chart: echarts.ECharts | null = null;
+let chart: echarts.ECharts;
 
 export default defineComponent({
   props: {
@@ -14,7 +14,7 @@ export default defineComponent({
       type: Object,
     },
   },
-  setup(props) {
+  setup(props:any) {
     const { proxy } = getCurrentInstance() as ComponentInternalInstance;
     
     const calculateProportion = (value: number, total: number) => {

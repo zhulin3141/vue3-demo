@@ -14,7 +14,7 @@ import { EChartsOption } from "echarts/types/dist/shared";
 import * as echarts from "echarts/core";
 import "../assets/china.js";
 
-let chart: echarts.ECharts | null = null;
+let chart: echarts.ECharts;
 
 export default {
   props: {

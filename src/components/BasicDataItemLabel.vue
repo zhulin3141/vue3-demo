@@ -21,9 +21,17 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   props: {
-    label: String,
-    config: Object,
-    inCrValue: Number,
+    label: {
+      type: String,
+    },
+    config: {
+      type: Object,
+      default: {}
+    },
+    inCrValue: {
+      type: Number,
+      default: 0,
+    },
   },
   setup(){
     return {
