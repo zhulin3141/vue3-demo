@@ -9,7 +9,12 @@
 </template>
 
 <script lang="ts">
-import { ComponentInternalInstance, getCurrentInstance, onMounted, watch } from "vue";
+import {
+  ComponentInternalInstance,
+  getCurrentInstance,
+  onMounted,
+  watch,
+} from "vue";
 import { EChartsOption } from "echarts/types/dist/shared";
 import * as echarts from "echarts/core";
 import "../assets/china.js";
@@ -36,7 +41,7 @@ export default {
       let option: EChartsOption = {
         tooltip: {
           triggerOn: "click",
-          formatter: (params: any, t: string, n: Function) => {
+          formatter: (params: any) => {
             return 0.5 == params.value
               ? params.name + "：有疑似病例"
               : params.seriesName +
@@ -66,8 +71,8 @@ export default {
           textStyle: {
             color: "rgba(255,255,255,0.7)",
           },
-          inRange:{
-            color: '#fff'
+          inRange: {
+            color: "#fff",
           },
           // 图例
           pieces: [
@@ -136,6 +141,7 @@ export default {
           {
             name: "确诊病例",
             type: "map",
+            map: "china",
             geoIndex: 0,
             data: props.list,
           },
@@ -143,6 +149,11 @@ export default {
       };
 
       chart && chart.setOption(option);
+    };
+
+    const resetMapPosition = ()=> {
+      chart?.dispatchAction({ type: "restore" });
+      setOptions();
     };
 
     watch(
@@ -159,15 +170,8 @@ export default {
     });
 
     return {
-      setOptions,
+      resetMapPosition,
     };
-  },
-
-  methods: {
-    resetMapPosition() {
-      chart?.dispatchAction({ type: "restore" });
-      this.setOptions();
-    },
   },
 };
 </script>

@@ -128,7 +128,7 @@ export default defineComponent({
             },
             {
               name: "",
-              value: 100 - item.value,
+              value: 100 - Number(item.value),
               label: {
                 show: false,
               },

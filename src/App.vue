@@ -6,7 +6,7 @@ import BasicDataItemLabel from "./components/BasicDataItemLabel.vue";
 import BasicTrendChart from "./components/BasicTrendChart.vue";
 import DataMap from "./components/DataMap.vue";
 
-import apiService from "./api";
+import apiService from "./api/index.js";
 import { onMounted, ref } from "vue";
 
 onMounted(() => {
@@ -115,9 +115,9 @@ const initBasicConfig = (data: any = null) => {
 let defaultDataConfig = ref(initBasicConfig());
 
 let basicIncrTrendData = ref({
-  dateList: [],
-  importedIncrDataList: [],
-  currentConfirmedIncrDataList: [],
+  dateList: <any>[],
+  importedIncrDataList: <any>[],
+  currentConfirmedIncrDataList: <any>[],
 });
 
 let mapDataList = ref([]);
@@ -206,7 +206,6 @@ const setBasicIncrTrendData = (data: any) => {
     dateList: dateList,
     importedIncrDataList: importedIncrList,
     currentConfirmedIncrDataList: currentConfirmedIncrList,
-    noInFectDataList: noInFectDataList,
   };
 
   confirmSingleBarChartData.value = {
