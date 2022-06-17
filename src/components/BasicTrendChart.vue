@@ -1,24 +1,24 @@
 <template>
-  <div id="basicTrendChart"></div>
+  <div ref="basicTrendChart"></div>
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance, onMounted, watch } from "vue";
-import * as echarts from "echarts";
-let chart: any = null;
+import { ComponentInternalInstance, defineComponent, getCurrentInstance, onMounted, watch } from "vue";
+import * as echarts from "echarts/core";
+let chart: echarts.ECharts | null = null;
 
 export default defineComponent({
   props: {
     data: Object,
   },
   setup(props) {
-    const { proxy } = getCurrentInstance();
+    const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
     const initChart = () => {
       if (null != chart) {
         chart.dispose();
       }
-      chart = proxy.$echarts.init(document.getElementById("basicTrendChart"));
+      chart = echarts.init(proxy?.$refs.basicTrendChart as HTMLElement)
       setOptions();
     };
 

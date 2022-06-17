@@ -9,12 +9,12 @@
 </template>
 
 <script lang="ts">
-import { getCurrentInstance, onMounted, watch } from "vue";
+import { ComponentInternalInstance, getCurrentInstance, onMounted, watch } from "vue";
 import { EChartsOption } from "echarts/types/dist/shared";
-import { EChartsType } from "echarts";
+import * as echarts from "echarts/core";
 import "../assets/china.js";
 
-let chart: EChartsType | null = null;
+let chart: echarts.ECharts | null = null;
 
 export default {
   props: {
@@ -22,13 +22,13 @@ export default {
     list: Array,
   },
   setup(props: any) {
-    const { proxy } = getCurrentInstance();
+    const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
     const initChart = () => {
       if (null != chart) {
         chart.dispose();
       }
-      chart = proxy.$echarts.init(proxy.$refs.chinaMapRef);
+      chart = echarts.init(proxy?.$refs.chinaMapRef as HTMLElement);
       setOptions();
     };
 

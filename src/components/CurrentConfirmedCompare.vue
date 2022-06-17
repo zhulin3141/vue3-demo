@@ -1,11 +1,11 @@
 <template>
-  <div id="currentConfirmedComoareBarChart" style="width: 100%; height: 100%"></div>
+  <div ref="currentConfirmedComoareBarChart" style="width: 100%; height: 100%"></div>
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance, onMounted, watch } from "vue";
-import * as echarts from "echarts";
-let chart: any = null;
+import { ComponentInternalInstance, defineComponent, getCurrentInstance, onMounted, watch } from "vue";
+import * as echarts from "echarts/core";
+let chart: echarts.ECharts | null = null;
 
 export default defineComponent({
   props: {
@@ -15,15 +15,13 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { proxy } = getCurrentInstance();
+    const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
     const initChart = () => {
       if (null != chart) {
         chart.dispose();
       }
-      chart = proxy.$echarts.init(
-        document.getElementById("currentConfirmedComoareBarChart")
-      );
+      chart = echarts.init(proxy?.$refs.currentConfirmedComoareBarChart as HTMLElement)
       setOptions();
     };
 
