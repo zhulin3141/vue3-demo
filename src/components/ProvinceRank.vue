@@ -99,11 +99,11 @@ export default defineComponent({
               color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
                 {
                   offset: 0,
-                  color: "rgb(2,163,254,1)",
+                  color: "rgb(2,163,254)",
                 },
                 {
                   offset: 1,
-                  color: "rgb(125,64,255,1)",
+                  color: "rgb(125,64,255)",
                 },
               ]),
             },
