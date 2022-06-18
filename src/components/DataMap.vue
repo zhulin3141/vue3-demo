@@ -17,7 +17,7 @@ import {
 } from "vue";
 import { EChartsOption } from "echarts/types/dist/shared";
 import * as echarts from "echarts/core";
-import "../assets/china.js";
+import("../assets/china.js");
 
 let chart: echarts.ECharts;
 
