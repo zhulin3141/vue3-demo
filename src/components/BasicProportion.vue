@@ -3,7 +3,13 @@
 </template>
 
 <script lang="ts">
-import { ComponentInternalInstance, defineComponent, getCurrentInstance, onMounted, watch } from "vue";
+import {
+  ComponentInternalInstance,
+  defineComponent,
+  getCurrentInstance,
+  onMounted,
+  watch,
+} from "vue";
 import * as echarts from "echarts/core";
 
 let chart: echarts.ECharts;
@@ -14,9 +20,9 @@ export default defineComponent({
       type: Object,
     },
   },
-  setup(props:any) {
+  setup(props: any) {
     const { proxy } = getCurrentInstance() as ComponentInternalInstance;
-    
+
     const calculateProportion = (value: number, total: number) => {
       if (total == 0) {
         return 0;
@@ -29,9 +35,7 @@ export default defineComponent({
       if (null != chart) {
         chart.dispose();
       }
-      chart = echarts.init(
-        proxy?.$refs.basicProportionChart as HTMLElement
-      );
+      chart = echarts.init(proxy?.$refs.basicProportionChart as HTMLElement);
       setOptions();
     };
 
@@ -119,8 +123,7 @@ export default defineComponent({
                     },
                   ],
                 },
-                label: {
-                },
+                label: {},
                 labelLine: {
                   show: false,
                 },
