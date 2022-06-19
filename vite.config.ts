@@ -30,7 +30,6 @@ export default ({ mode }) => {
       sourcemap: false,
       outDir: 'dist', //指定输出路径
       assetsDir: 'assets', // 指定生成静态资源的存放路径
-      minify: __DEV__ ? false : true,
       rollupOptions: {
         output: {
           manualChunks: {

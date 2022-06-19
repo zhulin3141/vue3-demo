@@ -4,7 +4,6 @@ import "./utils/mockServe";
 import * as echarts from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
 import {
-  AxisPointerComponent,
   GridComponent,
   TooltipComponent,
   TitleComponent,
@@ -17,7 +16,6 @@ import { LineChart, BarChart, PieChart, MapChart } from "echarts/charts";
 
 echarts.use([
   CanvasRenderer,
-  AxisPointerComponent,
   GridComponent,
   TooltipComponent,
   TitleComponent,

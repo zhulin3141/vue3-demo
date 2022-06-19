@@ -231,7 +231,7 @@ const setMapData = (dataList: any) => {
   <div class="header">
     <h1>全国新冠肺炎疫情数据大屏</h1>
     <div id="tip-info">
-      此数据为实时真实数据，数据来源：腾讯新闻<br />
+      此数据为实时模拟数据，数据来源：腾讯新闻<br />
       更新时间：2021-07-15 20:39:11
     </div>
   </div>
