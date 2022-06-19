@@ -1,6 +1,34 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import "./utils/mockServe"
+import { createApp } from "vue";
+import App from "./App.vue";
+import "./utils/mockServe";
+import * as echarts from "echarts/core";
+import { CanvasRenderer } from "echarts/renderers";
+import {
+  AxisPointerComponent,
+  GridComponent,
+  TooltipComponent,
+  TitleComponent,
+  LegendComponent,
+  VisualMapComponent,
+  GeoComponent,
+} from "echarts/components";
+import { LineChart, BarChart, PieChart, MapChart } from "echarts/charts";
 
-const app = createApp(App)
-app.mount('#app')
+
+echarts.use([
+  CanvasRenderer,
+  AxisPointerComponent,
+  GridComponent,
+  TooltipComponent,
+  TitleComponent,
+  LegendComponent,
+  VisualMapComponent,
+  GeoComponent,
+  LineChart,
+  BarChart,
+  PieChart,
+  MapChart,
+]);
+
+const app = createApp(App);
+app.mount("#app");
