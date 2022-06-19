@@ -332,9 +332,11 @@ const changeTheme = (themeStr:string) => {
 <style lang="less">
 @dark-default-color: #bcbcbf;
 @dark-bg-color: #060612;
+@dark-chart-bg-color: #0f142b;
 
 @light-default-color: #333;
 @light-bg-color: #fff;
+@light-chart-bg-color: #728af9;
 
 @more-color: green;
 @less-color: red;
@@ -357,7 +359,10 @@ const changeTheme = (themeStr:string) => {
     }
 
     .chart-card {
-      background: @dark-bg-color;
+      background: @dark-chart-bg-color;
+      .numbers{
+        color: #494ef1;
+      }
     }
   }
 }
@@ -371,7 +376,10 @@ const changeTheme = (themeStr:string) => {
     }
 
     .chart-card {
-      background: @light-bg-color;
+      background: @light-chart-bg-color;
+      .numbers{
+        color: white;
+      }
     }
   }
 }
@@ -384,7 +392,6 @@ const changeTheme = (themeStr:string) => {
   & .numbers {
     font-size: 25px;
     font-weight: bold;
-    color: #494ef1;
     padding: 12px 0;
   }
   & h4 {
