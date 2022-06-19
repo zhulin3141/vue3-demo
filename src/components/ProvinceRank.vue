@@ -3,138 +3,160 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
-import * as echarts from "echarts/core";
-let chart: echarts.ECharts;
+import { onMounted, ref, watch } from 'vue'
+import * as echarts from 'echarts/core'
 
-const provinceRankingBarChart = ref();
+let chart: echarts.ECharts
+
+const provinceRankingBarChart = ref()
 const props = defineProps({
   data: {
-      type: Object,
-      default() {
-        return {
-          provinceList: [],
-          valueList: [],
-        };
-      },
+    type: Object,
+    default() {
+      return {
+        provinceList: [],
+        valueList: []
+      }
     }
-});
+  },
+  theme: String
+})
 
 const initChart = () => {
-  chart = echarts.init(provinceRankingBarChart.value as HTMLElement);
-  setOptions();
-};
+  chart = echarts.init(provinceRankingBarChart.value as HTMLElement)
+  setOptions()
+}
+
+const themeStyle = {
+  dark: {
+    firstLineColor: 'rgb(2,163,254)',
+    secondLineColor: 'rgb(125,64,255)',
+    bgColor: 'rgba(24,31,68,1)',
+  },
+  light: {
+    firstLineColor: '#6a6efd',
+    secondLineColor: '#a4a6ff',
+    bgColor: '#292fff',
+  }
+}
 
 const setOptions = () => {
-  var salvProValue = props.data.valueList;
-  var salvProMax = [];
+  var salvProValue = props.data.valueList
+  var salvProMax = []
   for (let i = 0; i < salvProValue.length; i++) {
-    salvProMax.push(salvProValue[0]);
+    salvProMax.push(salvProValue[0])
   }
   let option = {
     grid: {
-      left: "2%",
-      right: "2%",
-      bottom: "2%",
-      top: "2%",
-      containLabel: true,
+      left: '2%',
+      right: '2%',
+      bottom: '2%',
+      top: '2%',
+      containLabel: true
     },
     tooltip: {
-      trigger: "axis",
+      trigger: 'axis',
       axisPointer: {
-        type: "none",
+        type: 'none'
       },
       formatter: function (params: any) {
-        return params[0].name + " : " + params[0].value;
-      },
+        return params[0].name + ' : ' + params[0].value
+      }
     },
     xAxis: {
       show: false,
-      type: "value",
+      type: 'value'
     },
     yAxis: [
       {
-        type: "category",
+        type: 'category',
         inverse: true,
         axisLabel: {
           show: true,
-          color: "#fff",
+          color: '#fff'
         },
         splitLine: {
-          show: false,
+          show: false
         },
         axisTick: {
-          show: false,
+          show: false
         },
         axisLine: {
-          show: false,
+          show: false
         },
-        data: props.data.provinceList,
+        data: props.data.provinceList
       },
       {
-        type: "category",
+        type: 'category',
         inverse: true,
-        axisTick: "none",
-        axisLine: "none",
+        axisTick: 'none',
+        axisLine: 'none',
         show: true,
         axisLabel: {
-          color: "#ffffff",
-          fontSize: "12",
+          color: '#ffffff',
+          fontSize: '12'
         },
-        data: salvProValue,
-      },
+        data: salvProValue
+      }
     ],
     series: [
       {
-        name: "值",
-        type: "bar",
+        name: '值',
+        type: 'bar',
         zlevel: 1,
         itemStyle: {
-          borderRadius: 30,
+          borderRadius: 12,
           color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
             {
               offset: 0,
-              color: "rgb(2,163,254)",
+              color: themeStyle[props.theme].firstLineColor
             },
             {
               offset: 1,
-              color: "rgb(125,64,255)",
-            },
-          ]),
+              color: themeStyle[props.theme].secondLineColor
+            }
+          ])
         },
         barWidth: 20,
-        data: salvProValue,
+        data: salvProValue
       },
       {
-        name: "背景",
-        type: "bar",
+        name: '背景',
+        type: 'bar',
         barWidth: 20,
-        barGap: "-100%",
+        barGap: '-100%',
         data: salvProMax,
         itemStyle: {
-          color: "rgba(24,31,68,1)",
-          borderRadius: 30,
-        },
-      },
-    ],
-  };
-  chart?.setOption(option);
-};
+          color: themeStyle[props.theme].bgColor,
+          borderRadius: 12
+        }
+      }
+    ]
+  }
+
+  chart?.setOption(option)
+}
 
 watch(
   () => props.data,
   (newList, oldList) => {
     if (oldList != newList) {
-      setOptions();
+      setOptions()
     }
   },
   { deep: true }
-);
+)
+
+watch(
+  () => props.theme,
+  (newVal, oldVal) => {
+    oldVal != newVal && setOptions()
+  }
+)
 
 onMounted(() => {
-  initChart();
-});
+  initChart()
+})
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

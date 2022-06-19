@@ -225,10 +225,20 @@ const setMapData = (dataList: any) => {
 
   mapDataList.value = list;
 };
+
+let theme:string = ref('dark');
+const changeTheme = (themeStr:string) => {
+  const html = document.getElementsByTagName('html')
+  html[0].className = theme.value = themeStr
+}
 </script>
 
 <template>
   <div class="header">
+    <div id="theme-switch">
+      <div class="theme-switch-btn dark-theme-btn" @click="changeTheme('dark')"></div>
+      <div class="theme-switch-btn light-theme-btn" @click="changeTheme('light')"></div>
+    </div>
     <h1>全国新冠肺炎疫情数据大屏</h1>
     <div id="tip-info">
       此数据为实时模拟数据，数据来源：腾讯新闻<br />
@@ -242,6 +252,7 @@ const setMapData = (dataList: any) => {
         <div><h4>累计排名（TOP 10）</h4></div>
         <province-rank
           :data="top10ProvinceData"
+          :theme="theme"
           style="width: 100%; height: 380px"
         />
       </div>
@@ -318,21 +329,54 @@ const setMapData = (dataList: any) => {
 </template>
 
 <style lang="less">
+@dark-default-color: #bcbcbf;
+@dark-bg-color: #060612;
+
+@light-default-color: #333;
+@light-bg-color: #fff;
+
 @more-color: green;
 @less-color: red;
-
-body {
-  background-color: #060612;
-}
-#app {
+.default-text(){
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #bcbcbf;
 }
+.border-radius(@radius){
+  border-radius: @radius;
+}
+.dark{
+  body {
+    background-color: @dark-bg-color;
+
+    #app {
+      .default-text();
+      color: @dark-default-color;
+    }
+
+    .chart-card {
+      background: @dark-bg-color;
+    }
+  }
+}
+.light{
+  body {
+    background-color: @light-bg-color;
+
+    #app {
+      .default-text();
+      color: @light-default-color;
+    }
+
+    .chart-card {
+      background: @light-bg-color;
+    }
+  }
+}
+
+
 .chart-card {
-  background: #0f142b;
   border-radius: 10px;
   margin: 0 20px;
   padding: 7px 0;
@@ -344,6 +388,29 @@ body {
   }
   & h4 {
     margin: 5px 0 15px;
+  }
+}
+
+#theme-switch{
+  position: relative;
+  .theme-switch-btn{
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    cursor: pointer;
+    .border-radius(10px);
+    border: 2px solid transparent;
+    position: absolute;
+    left: 0;
+    &.dark-theme-btn{
+      background-color: black;
+      border-color: #fff;
+    }
+    &.light-theme-btn{
+      background-color: #fff;
+      border-color: black;
+      transform: translateX(20px);
+    }
   }
 }
 #tip-info {
