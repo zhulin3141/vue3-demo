@@ -19,7 +19,9 @@ const props = defineProps({
       }
     }
   },
-  theme: String
+  theme: {
+    type: String,
+  },
 })
 
 const initChart = () => {
@@ -109,11 +111,11 @@ const setOptions = () => {
           color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
             {
               offset: 0,
-              color: themeStyle[props.theme].firstLineColor
+              color: themeStyle[props.theme as keyof typeof themeStyle].firstLineColor
             },
             {
               offset: 1,
-              color: themeStyle[props.theme].secondLineColor
+              color: themeStyle[props.theme as keyof typeof themeStyle].secondLineColor
             }
           ])
         },
@@ -127,7 +129,7 @@ const setOptions = () => {
         barGap: '-100%',
         data: salvProMax,
         itemStyle: {
-          color: themeStyle[props.theme].bgColor,
+          color: themeStyle[props.theme as keyof typeof themeStyle].bgColor,
           borderRadius: 12
         }
       }

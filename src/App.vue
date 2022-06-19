@@ -226,10 +226,11 @@ const setMapData = (dataList: any) => {
   mapDataList.value = list;
 };
 
-let theme:string = ref('dark');
+let theme = ref('dark');
 const changeTheme = (themeStr:string) => {
   const html = document.getElementsByTagName('html')
-  html[0].className = theme.value = themeStr
+  html[0].className = themeStr
+  theme.value = themeStr
 }
 </script>
 
