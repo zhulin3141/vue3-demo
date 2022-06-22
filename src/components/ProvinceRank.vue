@@ -20,8 +20,8 @@ const props = defineProps({
     }
   },
   theme: {
-    type: String,
-  },
+    type: String
+  }
 })
 
 const initChart = () => {
@@ -33,12 +33,12 @@ const themeStyle = {
   dark: {
     firstLineColor: 'rgb(2,163,254)',
     secondLineColor: 'rgb(125,64,255)',
-    bgColor: 'rgba(24,31,68,1)',
+    bgColor: 'rgba(24,31,68,1)'
   },
   light: {
     firstLineColor: '#6a6efd',
     secondLineColor: '#a4a6ff',
-    bgColor: '#292fff',
+    bgColor: '#292fff'
   }
 }
 

@@ -13,5 +13,5 @@ export default {
     getDailyList: () => {
         return mockRequest.get('/daily')
     },
-    
+
 }

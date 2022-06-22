@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import ProvinceRank from "./components/ProvinceRank.vue";
-import BasicProportion from "./components/BasicProportion.vue";
-import CurrentConfirmedCompare from "./components/CurrentConfirmedCompare.vue";
-import BasicDataItemLabel from "./components/BasicDataItemLabel.vue";
-import BasicTrendChart from "./components/BasicTrendChart.vue";
-import DataMap from "./components/DataMap.vue";
+import ProvinceRank from './components/ProvinceRank.vue'
+import BasicProportion from './components/BasicProportion.vue'
+import CurrentConfirmedCompare from './components/CurrentConfirmedCompare.vue'
+import BasicDataItemLabel from './components/BasicDataItemLabel.vue'
+import BasicTrendChart from './components/BasicTrendChart.vue'
+import DataMap from './components/DataMap.vue'
 
-import apiService from "./api/index.js";
-import { onMounted, ref } from "vue";
+import apiService from './api/index.js'
+import { onMounted, ref } from 'vue'
 
 onMounted(() => {
-  queryProvinceDataList();
-  queryBasicData();
-  queryTrendDataList();
-});
+  queryProvinceDataList()
+  queryBasicData()
+  queryTrendDataList()
+})
 
 let top10ProvinceData: any = ref({
   provinceList: [],
-  valueList: [],
-});
+  valueList: []
+})
 
 let basicData: any = ref({
   currentConfirmedCount: 0,
@@ -37,197 +37,193 @@ let basicData: any = ref({
   noInFectIncr: 0,
   suspectCount: 0,
   suspectIncr: 0,
-  updateTime: "-",
-});
+  updateTime: '-'
+})
 
-let trendDataList = ref([]);
+let trendDataList = ref([])
 
-let rate: Object = ref({});
+let rate: Object = ref({})
 
 let confirmSingleBarChartData: any = ref({
   dateList: [],
   currentConfirmedCountList: [],
-  confirmedCountList: [],
-});
+  confirmedCountList: []
+})
 
 const initBasicConfig = (data: any = null) => {
-  let currentConfirmedCount = data ? [data.currentConfirmedCount] : 0;
-  let confirmedCount = data ? [data.confirmedCount] : 0;
-  let importedCount = data ? [data.importedCount] : 0;
-  let noInFectCount = data ? [data.noInFectCount] : 0;
-  let deadCount = data ? [data.deadCount] : 0;
-  let curedCount = data ? [data.curedCount] : 0;
+  let currentConfirmedCount = data ? [data.currentConfirmedCount] : 0
+  let confirmedCount = data ? [data.confirmedCount] : 0
+  let importedCount = data ? [data.importedCount] : 0
+  let noInFectCount = data ? [data.noInFectCount] : 0
+  let deadCount = data ? [data.deadCount] : 0
+  let curedCount = data ? [data.curedCount] : 0
 
-  let formatter: any = {};
+  let formatter: any = {}
 
-  const getNumberStyle = (
-    color = "#E8EAF6",
-    fontSize = 30,
-    fontWeight = "bolder"
-  ) => {
+  const getNumberStyle = (color = '#E8EAF6', fontSize = 30, fontWeight = 'bolder') => {
     return {
       fontSize: fontSize,
       fill: color,
-      fontWeight: fontWeight,
-    };
-  };
+      fontWeight: fontWeight
+    }
+  }
 
   return {
     confirmedCount: {
       number: [confirmedCount],
-      content: "{nt}",
+      content: '{nt}',
       formatter,
-      style: getNumberStyle(),
+      style: getNumberStyle()
     },
     currentConfirmedCount: {
       number: [currentConfirmedCount],
-      content: "{nt}",
+      content: '{nt}',
       formatter,
-      style: getNumberStyle("#2E8EEA"),
+      style: getNumberStyle('#2E8EEA')
     },
     importedCount: {
       number: [importedCount],
-      content: "{nt}",
+      content: '{nt}',
       formatter,
-      style: getNumberStyle(),
+      style: getNumberStyle()
     },
     noInFectCount: {
       number: [noInFectCount],
-      content: "{nt}",
+      content: '{nt}',
       formatter,
-      style: getNumberStyle(),
+      style: getNumberStyle()
     },
     deadCount: {
       number: [deadCount],
-      content: "{nt}",
+      content: '{nt}',
       formatter,
-      style: getNumberStyle("#D32E58"),
+      style: getNumberStyle('#D32E58')
     },
     curedCount: {
       number: [curedCount],
-      content: "{nt}",
+      content: '{nt}',
       formatter,
-      style: getNumberStyle(),
-    },
-  };
-};
+      style: getNumberStyle()
+    }
+  }
+}
 
-let defaultDataConfig = ref(initBasicConfig());
+let defaultDataConfig = ref(initBasicConfig())
 
 let basicIncrTrendData = ref({
   dateList: <any>[],
   importedIncrDataList: <any>[],
-  currentConfirmedIncrDataList: <any>[],
-});
+  currentConfirmedIncrDataList: <any>[]
+})
 
-let mapDataList = ref([]);
+let mapDataList = ref([])
 
 const queryProvinceDataList = () => {
   apiService.getProvinceDataList().then((res: any) => {
     // 设置累计排名数据
-    setProvinceRankingData(res.data.data);
-    setMapData(res.data.data);
-  });
-};
+    setProvinceRankingData(res.data.data)
+    setMapData(res.data.data)
+  })
+}
 
 const setProvinceRankingData = (areaList: any) => {
-  let provinceList = [];
-  let dataValueList = [];
+  let provinceList = []
+  let dataValueList = []
   for (let i = 0; i < 10; i++) {
-    provinceList.push(areaList[i].provinceLabel);
-    dataValueList.push(areaList[i].confirmedCount);
+    provinceList.push(areaList[i].provinceLabel)
+    dataValueList.push(areaList[i].confirmedCount)
   }
   let data = {
     provinceList: provinceList,
-    valueList: dataValueList,
-  };
-  top10ProvinceData.value = data;
-};
+    valueList: dataValueList
+  }
+  top10ProvinceData.value = data
+}
 
 const queryBasicData = () => {
   apiService.getOverall().then((res: any) => {
-    basicData.value = res.data.data;
-    setBasicData(res.data.data);
-    defaultDataConfig.value = initBasicConfig(res.data.data);
-  });
-};
+    basicData.value = res.data.data
+    setBasicData(res.data.data)
+    defaultDataConfig.value = initBasicConfig(res.data.data)
+  })
+}
 
 const setBasicData = (data: any) => {
   // 处理治愈率和死亡率
   rate = {
     curedRate: data.curedRate / 100,
-    deadRate: data.deadRate / 100,
-  };
-};
+    deadRate: data.deadRate / 100
+  }
+}
 
 const queryTrendDataList = () => {
   apiService.getDailyList().then((res: any) => {
-    trendDataList.value = res.data.data;
-    setBasicIncrTrendData(res.data.data);
-  });
-};
+    trendDataList.value = res.data.data
+    setBasicIncrTrendData(res.data.data)
+  })
+}
 
 const setBasicIncrTrendData = (data: any) => {
-  let dateList = [];
-  let currentConfirmedIncrList = [];
-  let importedIncrList = [];
-  let sevenDayDateList = [];
+  let dateList = []
+  let currentConfirmedIncrList = []
+  let importedIncrList = []
+  let sevenDayDateList = []
   // 仅显示一周条数据
-  let confirmedCountList = [];
-  let curedCountList = [];
+  let confirmedCountList = []
+  let curedCountList = []
   // 仅获取7条数据
-  let count = 7;
-  let noInFectDataList = [];
+  let count = 7
+  let noInFectDataList = []
   for (let i = data.currentConfirmedIncrList.length - 1; i >= 0; i--) {
-    dateList.push(data.currentConfirmedIncrList[i][0]);
-    currentConfirmedIncrList.push(data.currentConfirmedIncrList[i][1]);
+    dateList.push(data.currentConfirmedIncrList[i][0])
+    currentConfirmedIncrList.push(data.currentConfirmedIncrList[i][1])
   }
   for (let i = data.importedIncrList.length - 1; i >= 0; i--) {
-    importedIncrList.push(data.importedIncrList[i][1]);
+    importedIncrList.push(data.importedIncrList[i][1])
   }
   for (let i = data.noInFectCountList.length - 1; i >= 0; i--) {
-    noInFectDataList.push(data.noInFectCountList[i][1]);
+    noInFectDataList.push(data.noInFectCountList[i][1])
   }
   for (let i = count; i >= 0; i--) {
     if (confirmedCountList.length >= count) {
-      break;
+      break
     }
-    sevenDayDateList.push(data.confirmedCountList[i][0]);
-    confirmedCountList.push(data.confirmedCountList[i][1]);
+    sevenDayDateList.push(data.confirmedCountList[i][0])
+    confirmedCountList.push(data.confirmedCountList[i][1])
   }
   for (let i = count; i >= 0; i--) {
     if (curedCountList.length >= count) {
-      break;
+      break
     }
-    curedCountList.push(data.curedCountList[i][1]);
+    curedCountList.push(data.curedCountList[i][1])
   }
 
   basicIncrTrendData.value = {
     dateList: dateList,
     importedIncrDataList: importedIncrList,
-    currentConfirmedIncrDataList: currentConfirmedIncrList,
-  };
+    currentConfirmedIncrDataList: currentConfirmedIncrList
+  }
 
   confirmSingleBarChartData.value = {
     dateList: sevenDayDateList,
     curedCountList: curedCountList,
-    confirmedCountList: confirmedCountList,
-  };
-};
+    confirmedCountList: confirmedCountList
+  }
+}
 
 const setMapData = (dataList: any) => {
   let list = dataList.map((item: any) => {
     return {
       name: item.provinceLabel,
-      value: item.confirmedCount,
-    };
-  });
+      value: item.confirmedCount
+    }
+  })
 
-  mapDataList.value = list;
-};
+  mapDataList.value = list
+}
 
-let theme = ref('dark');
-const changeTheme = (themeStr:string) => {
+let theme = ref('dark')
+const changeTheme = (themeStr: string) => {
   const html = document.getElementsByTagName('html')
   html[0].className = themeStr
   theme.value = themeStr
@@ -259,10 +255,7 @@ const changeTheme = (themeStr:string) => {
       </div>
       <div class="chart-card" style="margin: 15px 20px">
         <div><h4>占比</h4></div>
-        <basic-proportion
-          :data="basicData"
-          style="width: 100%; height: 120px"
-        />
+        <basic-proportion :data="basicData" style="width: 100%; height: 120px" />
       </div>
       <div class="chart-card">
         <div><h4>最近一周累计治愈</h4></div>
@@ -312,17 +305,11 @@ const changeTheme = (themeStr:string) => {
 
       <div id="m-wrapper">
         <div id="map-wrapper">
-          <data-map
-            title=""
-            :list="mapDataList"
-          />
+          <data-map title="" :list="mapDataList" />
         </div>
         <div class="new-trader-wrapper chart-card">
           <div><h4>新增趋势</h4></div>
-          <basic-trend-chart
-            :data="basicIncrTrendData"
-            style="width: 100%; height: 320px"
-          />
+          <basic-trend-chart :data="basicIncrTrendData" style="width: 100%; height: 320px" />
         </div>
       </div>
     </div>
@@ -340,16 +327,16 @@ const changeTheme = (themeStr:string) => {
 
 @more-color: green;
 @less-color: red;
-.default-text(){
+.default-text() {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
 }
-.border-radius(@radius){
+.border-radius(@radius) {
   border-radius: @radius;
 }
-.dark{
+.dark {
   body {
     background-color: @dark-bg-color;
 
@@ -360,13 +347,13 @@ const changeTheme = (themeStr:string) => {
 
     .chart-card {
       background: @dark-chart-bg-color;
-      .numbers{
+      .numbers {
         color: #494ef1;
       }
     }
   }
 }
-.light{
+.light {
   body {
     background-color: @light-bg-color;
 
@@ -377,13 +364,12 @@ const changeTheme = (themeStr:string) => {
 
     .chart-card {
       background: @light-chart-bg-color;
-      .numbers{
+      .numbers {
         color: white;
       }
     }
   }
 }
-
 
 .chart-card {
   border-radius: 10px;
@@ -399,9 +385,9 @@ const changeTheme = (themeStr:string) => {
   }
 }
 
-#theme-switch{
+#theme-switch {
   position: relative;
-  .theme-switch-btn{
+  .theme-switch-btn {
     display: inline-block;
     width: 12px;
     height: 12px;
@@ -410,11 +396,11 @@ const changeTheme = (themeStr:string) => {
     border: 2px solid transparent;
     position: absolute;
     left: 0;
-    &.dark-theme-btn{
+    &.dark-theme-btn {
       background-color: black;
       border-color: #fff;
     }
-    &.light-theme-btn{
+    &.light-theme-btn {
       background-color: #fff;
       border-color: black;
       transform: translateX(20px);
@@ -442,7 +428,7 @@ const changeTheme = (themeStr:string) => {
     position: relative;
     top: 13px;
   }
-  & span{
+  & span {
     padding: 0 5px;
   }
   & .more span {
